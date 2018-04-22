@@ -1,8 +1,5 @@
 apply plugin: 'groovy'
-apply plugin: 'maven'
-
-
-
+apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -11,13 +8,30 @@ dependencies {
     // groovy sdk
     implementation localGroovy()
 }
-group='com.helloyuyu.dimenadjuster'
-version='1.0.5'
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: uri('../repo'))
-        }
-    }
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }
+
+publish {
+    userOrg = 'helloyuyu'
+    groupId = 'com.helloyuyu'//jcenter上的路径
+    artifactId = 'dimens-adjuster'
+    publishVersion = '1.0.1'
+    desc = '基于SW屏幕适配的插件'
+    website = 'https://github.com/helloyuyu/DimensAdajuster'//网站
+    repoName = 'android'
+}
+
+//apply plugin: 'maven'
+
+//group='com.helloyuyu.dimenadjuster'
+//version='1.0.5'
+
+//
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            repository(url: uri('../repo'))
+//        }
+//    }
+//}
