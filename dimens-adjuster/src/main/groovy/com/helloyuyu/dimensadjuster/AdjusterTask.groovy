@@ -1,10 +1,12 @@
-package com.helloyuyu.dimenadjuster
+package com.helloyuyu.dimensadjuster
+
 import org.gradle.api.internal.AbstractTask
 import org.gradle.api.tasks.TaskAction
 
 class AdjusterTask extends AbstractTask {
 
     static final String NAME = "adjustDimens"
+    private static final boolean debug = true
 
     AdjusterTask() {
 
@@ -13,12 +15,15 @@ class AdjusterTask extends AbstractTask {
     @TaskAction
     def run() {
         AdjustArgs adjustArgs = getAdjusterExtension()
+        println(adjustArgs.toString())
         checkArguments(adjustArgs)
-        if (adjustArgs.adjustEnable) {
-            DimenAdjuster
-                    .create(adjustArgs.basicSW, adjustArgs.adjustSWs, adjustArgs.basicDimensXmlFilePath)
-                    .run()
+        if (!adjustArgs.adjustEnable) {
+            return
         }
+        DimenAdjuster
+                .create(adjustArgs.basicSW, adjustArgs.adjustSWs,
+                adjustArgs.basicDimensXmlFilePath, adjustArgs.excludes)
+                .run()
 
     }
 
@@ -35,6 +40,9 @@ class AdjusterTask extends AbstractTask {
             if (globalArgs.containsKey(AdjustArgs.EXT_KEY_ADJUST_ENABLE)) {
                 adjustArgs.adjustEnable = globalArgs.get(AdjustArgs.EXT_KEY_ADJUST_ENABLE)
             }
+            if (globalArgs.containsKey(AdjustArgs.EXT_KEY_EXCLUDES)) {
+                adjustArgs.excludes = ((List) globalArgs.get(AdjustArgs.EXT_KEY_EXCLUDES)).toArray()
+            }
         }
         AdjustArgs projectAdjustArgs = project.getExtensions().findByType(AdjustArgs.class)
 
@@ -47,6 +55,9 @@ class AdjusterTask extends AbstractTask {
         }
         if (projectAdjustArgs.basicSW != AdjustArgs.NOT_SET) {
             adjustArgs.basicSW = projectAdjustArgs.basicSW
+        }
+        if (projectAdjustArgs.excludes != null) {
+            adjustArgs.excludes = projectAdjustArgs.excludes
         }
         return adjustArgs
     }

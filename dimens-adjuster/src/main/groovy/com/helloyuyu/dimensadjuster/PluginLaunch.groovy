@@ -1,4 +1,4 @@
-package com.helloyuyu.dimenadjuster
+package com.helloyuyu.dimensadjuster
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -14,16 +14,16 @@ class PluginLaunch implements Plugin<Project> {
         hookAndroidProBuildTask(project, task)
     }
 
-    void createAdjustArgsExtension(Project project) {
+   private void createAdjustArgsExtension(Project project) {
         String defaultBasicDimensXmlFilePath = new File(project.getProjectDir(), "src/main/res/values/dimens.xml").getPath()
         project.getExtensions().create(AdjustArgs.EXT_NAME, AdjustArgs.class, defaultBasicDimensXmlFilePath)
     }
 
-    AdjusterTask createAdjusterTask(Project project) {
+    private AdjusterTask createAdjusterTask(Project project) {
         return project.getTasks().create(AdjusterTask.NAME, AdjusterTask.class)
     }
 
-    void hookAndroidProBuildTask(Project project, Task adjustTask) {
+    private void hookAndroidProBuildTask(Project project, Task adjustTask) {
 
         project.tasks.each {
             task ->

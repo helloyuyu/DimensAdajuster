@@ -1,4 +1,4 @@
-package com.helloyuyu.dimenadjuster
+package com.helloyuyu.dimensadjuster
 
 import groovy.xml.MarkupBuilder
 import java.util.regex.Pattern
@@ -8,15 +8,17 @@ class DimenAdjuster {
     int basicSW
     int[] adjustSWs
     String basicDimensXmlFilePath
+    List<String> excludes
 
-    private DimenAdjuster(int basicSW, int[] adjustSWs, String basicDimensXmlFilePath) {
+    private DimenAdjuster(int basicSW, int[] adjustSWs, String basicDimensXmlFilePath, List<String> excludes) {
         this.basicSW = basicSW
         this.adjustSWs = adjustSWs
         this.basicDimensXmlFilePath = basicDimensXmlFilePath
+        this.excludes = excludes
     }
 
-    static DimenAdjuster create(int basicSW, int[] adjustSWs, String basicDimensXmlFilePath) {
-        return new DimenAdjuster(basicSW, adjustSWs, basicDimensXmlFilePath)
+    static DimenAdjuster create(int basicSW, int[] adjustSWs, String basicDimensXmlFilePath, List<String> excludes) {
+        return new DimenAdjuster(basicSW, adjustSWs, basicDimensXmlFilePath, excludes)
     }
 
     /**
@@ -33,7 +35,7 @@ class DimenAdjuster {
     }
     /**
      * 解析 dimens.xml
-     * @param filePath 路径
+     * @param filePath dimens.xml路径
      * @return
      */
     List<Node> parseDimensXmlFile(String filePath) {
@@ -48,7 +50,12 @@ class DimenAdjuster {
         }
         return collectNodes.call(resourcesNode, spAndDpDimensNodeFilter)
     }
-
+    /**
+     * 根据smallest-width计算调整的dimen数值，构建生成对应的xml文件
+     * @param targetSW 要构建的smallest-width
+     * @param dimensSource 要调整的dimens
+     * @return
+     */
     def adjustDimens(int targetSW, List<Node> dimensSource) {
         def stringWriter = new StringWriter()
         def targetWsXml = new MarkupBuilder(stringWriter)
@@ -95,9 +102,22 @@ class DimenAdjuster {
         boolean test(Node node) {
             String dimenValue = node.text()
             Pattern dimenRegex = Pattern.compile('[.0-9]*(dp|sp)')
-            return dimenRegex.matcher(dimenValue).matches()
+            boolean preMatches = dimenRegex.matcher(dimenValue).matches()
+            if (!preMatches) {
+                return false
+            }
+            if (excludes == null || excludes.isEmpty()) {
+                return true
+            }
+            return excludes.stream().filter(new Predicate<String>() {
+                @Override
+                boolean test(String s) {
+                    return node.attribute("name") == s
+                }
+            }).toArray().size() == 0
         }
     }
+
     def adjustDpValue = {
         int basicSW, int targetSW, float value ->
             if (value < 1) return value

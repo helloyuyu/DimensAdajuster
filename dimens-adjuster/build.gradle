@@ -16,22 +16,22 @@ publish {
     userOrg = 'helloyuyu'
     groupId = 'com.helloyuyu'//jcenter上的路径
     artifactId = 'dimens-adjuster'
-    publishVersion = '1.0.1'
+    publishVersion = '1.0.8'
     desc = '基于SW屏幕适配的插件'
     website = 'https://github.com/helloyuyu/DimensAdajuster'//网站
     repoName = 'android'
 }
 
 //apply plugin: 'maven'
-
-//group='com.helloyuyu.dimenadjuster'
-//version='1.0.5'
-
+//
+//group='com.helloyuyu'
+//version='2.0.3'
+//
 //
 //uploadArchives {
 //    repositories {
 //        mavenDeployer {
-//            repository(url: uri('../repo'))
+//            repository(url: uri('E:/localMaven'))
 //        }
 //    }
 //}

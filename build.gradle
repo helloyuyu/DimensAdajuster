@@ -1,14 +1,18 @@
+
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
+
     repositories {
         google()
         jcenter()
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.novoda:bintray-release:0.8.1'
+        classpath 'com.helloyuyu:dimens-adjuster:1.0.8'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -18,6 +22,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+
     }
 }
 
@@ -26,8 +31,9 @@ task clean(type: Delete) {
 }
 ext {
     adjustArgsGlobal = [
-            'basicSW'     : 360,
-            'adjustSWs'   : [320, 360, 410],
-            'adjustEnable': true
+            'basicSW': 360,
+            'adjustSWs'   : [320, 360, 390, 410],
+            'adjustEnable': true,
+            'excludes':['sp18']
     ]
 }
