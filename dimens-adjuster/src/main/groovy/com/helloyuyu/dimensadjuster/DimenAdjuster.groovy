@@ -9,16 +9,18 @@ class DimenAdjuster {
     int[] adjustSWs
     String basicDimensXmlFilePath
     List<String> excludes
+    boolean dimenValueHalfUp
 
-    private DimenAdjuster(int basicSW, int[] adjustSWs, String basicDimensXmlFilePath, List<String> excludes) {
-        this.basicSW = basicSW
-        this.adjustSWs = adjustSWs
-        this.basicDimensXmlFilePath = basicDimensXmlFilePath
-        this.excludes = excludes
+    private DimenAdjuster(AdjustArgs args) {
+        this.basicSW = args.basicSW
+        this.adjustSWs = args.adjustSWs
+        this.basicDimensXmlFilePath = args.basicDimensXmlFilePath
+        this.excludes = args.excludes
+        this.dimenValueHalfUp = args.dimenValueHalfUp
     }
 
-    static DimenAdjuster create(int basicSW, int[] adjustSWs, String basicDimensXmlFilePath, List<String> excludes) {
-        return new DimenAdjuster(basicSW, adjustSWs, basicDimensXmlFilePath, excludes)
+    static DimenAdjuster create(AdjustArgs adjustArgs) {
+        return new DimenAdjuster(adjustArgs)
     }
 
     /**
@@ -80,6 +82,7 @@ class DimenAdjuster {
         }
         FileOutputStream fileOutputStream = new FileOutputStream(createSWDimenXmlFile(targetSW))
         fileOutputStream.write(stringWriter.toString().getBytes())
+        fileOutputStream.close()
     }
 
 
@@ -122,13 +125,14 @@ class DimenAdjuster {
         int basicSW, int targetSW, float value ->
             if (value < 1) return value
             float resultValue = targetSW * value / basicSW
-            return ((int) (resultValue * 10)) / 10
+            //((int) (resultValue * 10)) / 10
+            return (int) (dimenValueHalfUp ? (resultValue + 0.5f) : resultValue)
     }
     def adjustSpValue = {
         int basicSW, int targetSW, float value ->
             if (value < 1) return value
             float resultValue = targetSW * value / basicSW
-            return ((int) (resultValue * 10)) / 10
+            return (int) (dimenValueHalfUp ? (resultValue + 0.5f) : resultValue)
     }
 }
 

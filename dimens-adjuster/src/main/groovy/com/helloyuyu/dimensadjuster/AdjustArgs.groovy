@@ -11,6 +11,8 @@ class AdjustArgs {
     boolean adjustEnable
     /**排除的dimens name*/
     List<String> excludes
+    /** 计算时遇到浮点是否四舍五入*/
+    boolean dimenValueHalfUp
 
     static final int NOT_SET = 0
     static final String EXT_NAME = "adjustArgs"
@@ -19,6 +21,7 @@ class AdjustArgs {
     static final String EXT_KEY_ADJUST_SWS = "adjustSWs"
     static final String EXT_KEY_ADJUST_ENABLE = "adjustEnable"
     static final String EXT_KEY_EXCLUDES = "excludes"
+    static final String EXT_KEY_DIMEN_VALUE_HALF_UP = "dimenValueHalfUp"
 
     AdjustArgs(String basicDimensXmlFilePath) {
         this.basicDimensXmlFilePath = basicDimensXmlFilePath
@@ -26,6 +29,7 @@ class AdjustArgs {
         this.adjustEnable = true
         this.basicSW = NOT_SET
         this.excludes = null
+        this.dimenValueHalfUp = false
     }
 
     public void setExcludes(String[] strings) {

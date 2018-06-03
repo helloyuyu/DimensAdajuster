@@ -20,10 +20,7 @@ class AdjusterTask extends AbstractTask {
         if (!adjustArgs.adjustEnable) {
             return
         }
-        DimenAdjuster
-                .create(adjustArgs.basicSW, adjustArgs.adjustSWs,
-                adjustArgs.basicDimensXmlFilePath, adjustArgs.excludes)
-                .run()
+        DimenAdjuster.create(adjustArgs).run()
 
     }
 
@@ -42,6 +39,9 @@ class AdjusterTask extends AbstractTask {
             }
             if (globalArgs.containsKey(AdjustArgs.EXT_KEY_EXCLUDES)) {
                 adjustArgs.excludes = ((List) globalArgs.get(AdjustArgs.EXT_KEY_EXCLUDES)).toArray()
+            }
+            if (globalArgs.containsKey(AdjustArgs.EXT_KEY_DIMEN_VALUE_HALF_UP)) {
+                adjustArgs.dimenValueHalfUp = globalArgs.get(AdjustArgs.EXT_KEY_DIMEN_VALUE_HALF_UP)
             }
         }
         AdjustArgs projectAdjustArgs = project.getExtensions().findByType(AdjustArgs.class)

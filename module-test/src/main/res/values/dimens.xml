@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dp24">24dp</dimen>
+    <dimen name="dp_24">@dimen/dp24</dimen>
+    <dimen name="sp18">18sp</dimen>
+    <dimen name="px16">16px</dimen>
+    <dimen name="sp28">28sp</dimen>
+    <dimen name="dp36">36dp</dimen>
+    <dimen name="dp42">42dp</dimen>
+    <dimen name="dp35">35dp</dimen>
+</resources>
