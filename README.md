@@ -1,7 +1,6 @@
 # DimensAdjuster
 基于Smallest Width的屏幕适配插件
 
-
 #### 引入
 在顶级build.gradle 加入classpath
 ```groovy
@@ -54,6 +53,9 @@ adjustArgs {
     adjustEnable = true
 }
 ```
+#### 最终文件生成
+![图片](/image_sample.png)
+
 #### 参数说明
 * basicDimensXmlFilePath 基准的SmallestWidth对应的dimens.xml文件路径 默认值`new File("$project.projectDir/src/main/res/values/dimens.xml").getAbsolutePath()` 一般只有在sourceSet改变了默认路径才需要设置 
 * basicSW 基准的SmallestWidth
